@@ -26,7 +26,7 @@ const customErrorMessages = {
  **/
 
 /**
- * @Succurcal
+ * @POST
  */
 const PostSchema = Joi.object({
     title: Joi.string().required().messages(customErrorMessages),
@@ -36,6 +36,18 @@ const PostSchema = Joi.object({
     tags: Joi.string().required().messages(customErrorMessages)
 });
 
+/**
+ * @User
+ */
+
+const userShema=Joi.object(
+	{
+		firstName:Joi.string().required().messages(customErrorMessages),
+		lastName:Joi.string().required().messages(customErrorMessages),
+		email:Joi.string().required().messages(customErrorMessages),
+		password:Joi.string().required().messages(customErrorMessages)
+	}
+)
 /**
  * @HELPER
  * @type function
@@ -52,4 +64,4 @@ const validator = (schema, data) => {
     }
 };
 
-export { PostSchema, validator };
+export { PostSchema,userShema, validator };

@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 function InputDf({ label, name, onChange, value }) {
     return (
-        <div className="w-full border-[1px]  ">
+        <div className="w-full  ">
             <Input
                 onChange={onChange}
                 label={label}

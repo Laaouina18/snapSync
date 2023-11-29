@@ -16,7 +16,7 @@ import { convertImageToBase64, emptyFileInpute } from "../utils/HelpesFunc";
 function Posts() {
     const posts = useSelector((state) => state.PostsReducer.posts);
     const dispatch = useDispatch();
-
+	const { valeur, changer } = useChange();
     useEffect(() => {
         dispatch(fetchPosts());
     }, [dispatch]);
@@ -143,10 +143,20 @@ function Posts() {
                         formData={form}
                         ClearForm={ClearForm}
                     />
+					<button onClick={changer}>{valeur ? 'true' : 'false'}</button>
                 </div>
+            
             </div>
         </div>
     );
 }
 
+function useChange() {
+    const [valeur, setValeur] = useState(true);
+    function changer() {
+        setValeur(!valeur);
+		
+    }
+    return { valeur, changer };
+}
 export default Posts;
