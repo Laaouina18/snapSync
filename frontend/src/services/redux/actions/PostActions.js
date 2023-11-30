@@ -8,17 +8,31 @@ const fetchPosts = () => {
     };
 };
 
-const CreatePost = (post) => {
+const CreatePost = (post,user,token) => {
+	console.log(token);
     return async (dispatch) => {
-        const response = await axios.post("/post", post);
+		const { title, image, date, message, tags } = post;
+		const creator=user;
+        const response = await axios.post("/post/", {
+            title,
+            image,
+            date,
+            creator,
+            message,
+            tags
+        },{
+			headers: {
+				'Authorization': `Bearer ${token}`}
+			});
         dispatch({ type: actionTypes.CREATE_POST, payload: response.data });
 
         dispatch(fetchPosts());
     };
 };
-const UpdatePost = (post, id) => {
+const UpdatePost = (post, user,id, token) => {
     return async (dispatch) => {
-        const { title, image, date, creator, message, tags } = post;
+		const creator=user;
+        const { title, image, date, message, tags } = post;
         const response = await axios.patch(`/post/${id}`, {
             title,
             image,
@@ -26,28 +40,40 @@ const UpdatePost = (post, id) => {
             creator,
             message,
             tags
-        });
+        },{
+			headers: {
+				'Authorization': `Bearer ${token}`
+			}
+	});
         dispatch({ type: actionTypes.UPDATE_POST, payload: response.data });
 
         dispatch(fetchPosts());
     };
 };
 
-const LikePost=(id)=>{
+const LikePost=(id,userId,token)=>{
  return async(dispatch)=>{
-     const response = await axios.patch(`/post/likes/${id}`);
+     const response = await axios.patch(`/post/likes/${id}`,{ userId: JSON.stringify(userId) },{
+		headers: {
+			'Authorization': `Bearer ${token}`
+		}
+	 });
 	 dispatch({type:actionTypes.LIKE_POST,payload:response.data});
-	 dispatch(fetchPosts());
+	  dispatch(fetchPosts());
  };
 };
- const DeletePost=(id)=>{
-	return async(dispatch)=>{
-	const response = await axios.delete(`/post/${id}`);
-	dispatch({type:actionTypes.DELETE_POST,payload:response.data});
-	dispatch(fetchPosts());
+const DeletePost = (id, token) => {
+    return async (dispatch) => {
+        const response = await axios.delete(`/post/${id}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        dispatch({ type: actionTypes.DELETE_POST, payload: response.data });
+        dispatch(fetchPosts());
+    };
+};
 
- };
-};
 
 export { fetchPosts, CreatePost, UpdatePost, LikePost, DeletePost };
 

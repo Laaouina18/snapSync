@@ -22,25 +22,25 @@ router.get("/", getAllPosts);
  * @desc // create a new Post
  * @access POST
  */
-router.post("/", CreatePost);
+router.post("/", authMiddleware, CreatePost);
 
 /**
  * @PATCH
  * @desc // update a Post
  * @access PATCH
  */
-router.patch("/:id", UpadetPost);
+router.patch("/:id", authMiddleware, UpadetPost);
 /**
  * @DELETE
  * @desc //DELETE a Post
  * @access DELETE
  */
-router.delete("/:id", DeletePost);
+router.delete("/:id", authMiddleware, DeletePost);
 
 /**
  * @PATCH
  * @desc //LIKE a Post
  * @access PATCH
  */
-router.patch("/likes/:id", LikePost);
+router.patch("/likes/:id", authMiddleware, LikePost);
 export default router;

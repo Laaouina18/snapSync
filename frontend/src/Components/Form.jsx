@@ -13,12 +13,6 @@ function Form({ type, handelChange, handleSubmit, formData, ClearForm }) {
                 </h1>
                 <div className="flex flex-col gap-4 justify-center py-2">
                     <InputDf
-                        label="creator"
-                        name="creator"
-                        onChange={handelChange}
-                        value={formData.creator}
-                    />
-                    <InputDf
                         label="title"
                         name="title"
                         onChange={handelChange}
@@ -43,13 +37,14 @@ function Form({ type, handelChange, handleSubmit, formData, ClearForm }) {
                     />
                     <Button
                         name="SUBMIT"
-                        bgColor=" bg-gradient-to-l from-blue-500 to-blue-600 "
                         onSubmit={() => handleSubmit()}
+						style="bg-gradient-to-l from-blue-500 to-blue-600 w-full text-white rounded-md py-[4px] "
                     />
                     <Button
                         name="CLEAR"
                         bgColor="  bg-gradient-to-l from-red-500 to-red-600 "
                         onSubmit={ClearForm}
+						style="bg-gradient-to-l from-red-500 to-red-600 w-full text-white rounded-md py-[4px] "
                     />
                 </div>
             </div>

@@ -5,7 +5,7 @@ import InputDf from "./ui/InputDf";
 import InputFile from "./ui/InputFile";
 import TextareaDf from "./ui/TextareaDf";
 import Button from "./ui/Button";
-import GoogleLoginButton from "./ui/GoogleLoginButton";
+import GoogleAuthComponent from "./GoogleAuthComponent";
 function FormLogin({ type, handelChange, handleSubmit, formData}) {
   let formChamp = [];
 
@@ -50,10 +50,11 @@ function FormLogin({ type, handelChange, handleSubmit, formData}) {
 
           <Button
             name={type === "sighin" ? "Sign Up" : "Sign In"}
-            bgColor="bg-gradient-to-l from-blue-500 to-blue-600"
-            onSubmit={() => handleSubmit()}/>
+            onSubmit={() => handleSubmit()}
+			style="bg-gradient-to-l from-blue-500 to-blue-600 w-full text-white rounded-md py-[4px] "
+			/>
 
-			<GoogleLoginButton />
+			<GoogleAuthComponent  />
         </div>
       </div>
     </div>

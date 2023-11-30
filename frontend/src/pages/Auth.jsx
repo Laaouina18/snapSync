@@ -1,30 +1,15 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect } from "react";
 import Header from "../Components/Header";
 import FormLogin from "../Components/FormLogin";
-import { useDispatch } from "react-redux";
+import { useDispatch ,useSelector} from "react-redux";
 import { Connection, Inscription } from "../services/redux/actions/AuthActions";
 import { FcGoogle } from "react-icons/fc"; 
-import { GoogleLogin } from '@react-oauth/google';
-import { useGoogleOneTapLogin } from '@react-oauth/google';
-function Auth() {
 
+function Auth() {
+	const User = useSelector((state) => state.AuthReducer);
   const dispatch = useDispatch();
-  useGoogleOneTapLogin({
-	onSuccess: credentialResponse => {
-	  console.log(credentialResponse);
-	},
-	onError: () => {
-	  console.log('Login Failed');
-	},
-  });
-  	<GoogleLogin
-  onSuccess={credentialResponse => {
-    console.log(credentialResponse);
-  }}
-  onError={() => {
-    console.log('Login Failed');
-  }}
-/>;
+ 
+
   const [form, setForm] = useState({
     email: "",
     firstName: "",
@@ -35,7 +20,7 @@ function Auth() {
 
   const [type, setType] = useState("login");
 
-  function handleChange(e) {
+  function handelChange(e) {
     const { name, value } = e.target;
 
     setForm((prev) => ({
@@ -47,7 +32,6 @@ function Auth() {
     const { repeatPass, ...newForm } = form;
     dispatch(Inscription(newForm));
 
-
     setForm({
       email: "",
       firstName: "",
@@ -55,6 +39,7 @@ function Auth() {
       password: "",
       repeatPass: "",
     });
+	console.log(User);
   }
 
   function handleLogin() {
@@ -67,6 +52,7 @@ function Auth() {
       password: "",
       repeatPass: "",
     });
+
   }
 
   return (
@@ -77,17 +63,10 @@ function Auth() {
           <FormLogin
             type={type}
             formData={form}
-            handleChange={handleChange}
+            handelChange={handelChange}
             handleSubmit={type === "login" ? handleLogin : handleSignup}
           />
-     <GoogleLogin
-     onSuccess={credentialResponse => {
-       console.log(credentialResponse);
-  }}
-  onError={() => {
-    console.log('Login Failed');
-  }}
-/>;
+     
         </div>
       </div>
     </div>

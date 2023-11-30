@@ -15,8 +15,10 @@ import { convertImageToBase64, emptyFileInpute } from "../utils/HelpesFunc";
 
 function Posts() {
     const posts = useSelector((state) => state.PostsReducer.posts);
+	const token=localStorage.getItem('token');
+	const user=JSON.parse(localStorage.getItem('User'));
     const dispatch = useDispatch();
-	const { valeur, changer } = useChange();
+
     useEffect(() => {
         dispatch(fetchPosts());
     }, [dispatch]);
@@ -24,7 +26,6 @@ function Posts() {
     const [form, setForm] = useState({
         title: "",
         image: "",
-        creator: "",
         message: "",
         tags: ""
     });
@@ -45,37 +46,35 @@ function Posts() {
     const [SelectedPostId, SetselectedPostId] = useState(null);
     const [FormType, SetFormType] = useState("create");
 
-    function handelFormType({ title, message, creator, tags, image, id }) {
+    function handelFormType({ title, message, tags, image, id }) {
         SetselectedPostId(id);
         SetFormType("update");
         setForm({
             title: title,
             message: message,
-            creator: creator,
             tags: tags.join(""),
             image: image
         });
     }
 
     function handleSubmit() {
-        dispatch(CreatePost(form));
+        dispatch(CreatePost(form,user.firstName,token));
         setForm({
             title: "",
             image: "",
-            creator: "",
             message: "",
-            tags: ""
+            tags: "" 
         });
+
         emptyFileInpute("imageInput");
     }
 
     function Update() {
-        dispatch(UpdatePost(form, SelectedPostId));
+        dispatch(UpdatePost(form,user.firstName, SelectedPostId,token));
         setForm({
 
             title: "",
             image: "",
-            creator: "",
             message: "",
             tags: ""
         });
@@ -88,7 +87,6 @@ function Posts() {
 
             title: "",
             image: "",
-            creator: "",
             message: "",
             tags: ""
         });
@@ -98,11 +96,12 @@ function Posts() {
     }
 
     function likePost(postId) {
-        dispatch(LikePost(postId));
+		const user=JSON.parse(localStorage.getItem('User'));
+        dispatch(LikePost(postId,user._id,token));
     }
 
     function handleDelete(postId) {
-        dispatch(DeletePost(postId));
+        dispatch(DeletePost(postId,token));
     }
 
     return (
@@ -121,7 +120,7 @@ function Posts() {
                                     date="3 hours ago"
                                     creator={post.creator}
                                     message={post.message}
-                                    likeNumber={post.like}
+                                    likeNumber={post.like.length}
                                     tags={post.tags}
                                     updatefunc={handelFormType}
                                     like={likePost}
@@ -143,7 +142,7 @@ function Posts() {
                         formData={form}
                         ClearForm={ClearForm}
                     />
-					<button onClick={changer}>{valeur ? 'true' : 'false'}</button>
+				
                 </div>
             
             </div>
@@ -151,12 +150,5 @@ function Posts() {
     );
 }
 
-function useChange() {
-    const [valeur, setValeur] = useState(true);
-    function changer() {
-        setValeur(!valeur);
-		
-    }
-    return { valeur, changer };
-}
+
 export default Posts;

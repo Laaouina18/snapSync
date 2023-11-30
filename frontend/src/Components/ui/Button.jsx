@@ -1,12 +1,13 @@
 import PropTypes from "prop-types";
 
-function Button({ name, bgColor, onSubmit }) {
+function Button({ name, onSubmit,style }) {
     return (
         <button
-            className={`${bgColor} w-full text-white rounded-md py-[4px]   `}
+            className={`${style}   `}
             type="submit"
             name={name}
             onClick={onSubmit}
+			
         >
             {name}
         </button>

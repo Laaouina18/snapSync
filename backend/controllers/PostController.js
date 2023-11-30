@@ -76,9 +76,13 @@ const DeletePost = asynchandler(async (req, res) => {
  */
 const LikePost = asynchandler(async (req, res) => {
     const { id } = req.params;
-    const data = { $inc: { like: 1 } };
-    const post = await update(id, data);
-    res.status(200).json(post);
+    const { userId } = req.body;
+    const post = await Post.findById(id);
+    const isUserLiked = post.like.includes(userId);
+    const updateQuery = isUserLiked ? { $pull: { like: userId } } : { $addToSet: { like: userId } };
+    const postup = await Post.findByIdAndUpdate(id,updateQuery, { new: true });
+
+    res.status(200).json(postup);
 });
 
 export { getAllPosts, CreatePost, UpadetPost, DeletePost, LikePost };
