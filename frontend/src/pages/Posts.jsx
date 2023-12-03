@@ -2,6 +2,8 @@ import Header from "../Components/Header";
 import Post from "../Components/Post";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
+import Moment from 'moment';
+
 import {
     fetchPosts,
     CreatePost,
@@ -117,7 +119,7 @@ function Posts() {
                                     id={post._id}
                                     title={post.title}
                                     image={post.image}
-                                    date="3 hours ago"
+									date={Moment(post.createdAt).fromNow()} 
                                     creator={post.creator}
                                     message={post.message}
                                     likeNumber={post.like.length}
@@ -141,6 +143,7 @@ function Posts() {
                         }
                         formData={form}
                         ClearForm={ClearForm}
+						
                     />
 				
                 </div>

@@ -35,7 +35,7 @@ function FormLogin({ type,changerSign, handelChange, handleSubmit, formData,resp
   return (
     <div className="bg-white w-full">
       <div className="border-[1px] rounded-md px-5 py-4 shadow-xl">
-        <h1 className="text-center text-base font-semibold">
+        <h1 className="text-center text-lg text-base font-semibold">
           {type? "SIGN UP" : "SIGN IN"}
         </h1>
         <div className="flex flex-col gap-4 justify-center py-2">

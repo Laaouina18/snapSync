@@ -101,8 +101,8 @@ function Auth() {
             type={type}
             formData={form}
             handelChange={handelChange}
-            handleSubmit={type === "login" ? handleLogin : handleSignup}
-			onSuccess={responseMessage} onError={errorMessage}
+            handleSubmit={type ? handleLogin : handleSignup}
+			responseMessage={responseMessage} errorMessage={errorMessage}
 			changerSign={changerSign}
           />
        

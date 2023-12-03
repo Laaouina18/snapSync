@@ -23,12 +23,15 @@ function Header() {
         <p className="text-4xl font-medium text-sky-500 text-center">
           SnapSync
         </p>
-        <p>{user ? user.firstName + "  " + user.lastName : ""}</p>
+		<div className="flex justify-around">
+		<p className="px-5 pt-2">{user ? user.firstName + "  " + user.lastName : ""}</p>
         <Button
           name={user ? "LOGOUT" : "SIGN IN"}
           onSubmit={redirect}
-          style="bg-gradient-to-l from-blue-800 to-blue-800  px-5 pr-6 text-white rounded-md "
-        />
+          style={user ? "bg-gradient-to-l from-red-500 to-red-500  px-5 pr-6 text-white rounded-md "
+		  :"bg-gradient-to-l from-blue-800 to-blue-800  px-5 pr-6 text-white rounded-md "}/>
+		</div>
+       
       </div>
     </>
   );
