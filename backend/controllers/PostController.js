@@ -5,17 +5,54 @@ import { CheckRecord } from "../services/helpers/helpers.js";
 import Post from "../models/PostModel.js";
 
 /**
- * Retrieves all posts.
  * @async
  * @route {GET} /post
  * @access public
  * @returns {Promise<Array<Document>>} A Promise that resolves to an array of documents representing all posts.
  */
-const getAllPosts = asynchandler(async (req, res) => {
-    const posts = await Post.find();
-    res.json(posts);
-});
+const getAllPosts = async (req, res) => {
+	const page = parseInt(req.query.page) || 1;
+	const pageSize = 10; 
+	const skip = (page - 1) * pageSize;
+  
+	try {
+	  const posts = await Post.find()
+		.sort({ createdAt: -1 })
+		.skip(skip)
+		.limit(pageSize);
+  
+	  res.json(posts);
+	} catch (error) {
+	  res.status(500).json({ message: error.message });
+	}
+  };
 
+/**
+ * @async
+ * @route {GET} /post
+ * @access public 
+ * @returns {Promise<Array<Document>>} 
+ */
+const getPost= async (req, res) => {
+	const { tags, title } = req.query;
+  
+	const query = {};
+  
+	if (tags) {
+	  query.tags = { $in: tags.split(',') };
+	}
+  
+	if (title) {
+	  query.title = { $regex: title, $options: 'i' };
+	}
+  
+	try {
+	  const posts = await Post.find(query);
+	  return res.json(posts);
+	} catch (error) {
+	  return res.status(500).json({ message: error.message });
+	}
+  };
 /**
  * CREATE new post.
  * @async
@@ -23,13 +60,13 @@ const getAllPosts = asynchandler(async (req, res) => {
  * @access public
  * @returns {Promise<Document>} A Promise that resolves to an array of documents representing all posts.
  */
-const CreatePost = asynchandler(async (req, res) => {
+const CreatePost = async (req, res) => {
     const body = req.body;
     validator(PostSchema, body);
 	
     const post = await create(body);
     res.status(201).json(post);
-});
+};
 
 /**
  * Update new post.
@@ -38,7 +75,7 @@ const CreatePost = asynchandler(async (req, res) => {
  * @access public
  * @returns {Promise<Document>} A Promise that resolves  documents representing post.
  */
-const UpadetPost = asynchandler(async (req, res) => {
+const UpadetPost = async (req, res) => {
     validator(PostSchema, req.body);
     const { tags } = req.body;
     const tagsArray = tags.split(",");
@@ -49,7 +86,7 @@ const UpadetPost = asynchandler(async (req, res) => {
     await CheckRecord(Post, id);
     const post = await update(id, body);
     res.status(200).json(post);
-});
+};
 
 /**
  * Update new post.
@@ -59,22 +96,21 @@ const UpadetPost = asynchandler(async (req, res) => {
  * @returns {Promise<Document>} A Promise that resolves to an array of documents representing all post.
  */
 
-const DeletePost = asynchandler(async (req, res) => {
+const DeletePost = async (req, res) => {
     const { id } = req.params;
     await CheckRecord(Post, id);
     console.log(id);
     const post = await Post.findByIdAndDelete(id);
     res.status(200).json(post);
-});
+};
 
 /**
- * incerement the like value by 1
  * @async
  * @route {PATCH} /post/likes/id
  * @access public
  * @returns {Promise<Document>} A Promise that resolves todocuments representing all post.
  */
-const LikePost = asynchandler(async (req, res) => {
+const LikePost = async (req, res) => {
     const { id } = req.params;
     const { userId } = req.body;
     const post = await Post.findById(id);
@@ -83,6 +119,6 @@ const LikePost = asynchandler(async (req, res) => {
     const postup = await Post.findByIdAndUpdate(id,updateQuery, { new: true });
 
     res.status(200).json(postup);
-});
+};
 
-export { getAllPosts, CreatePost, UpadetPost, DeletePost, LikePost };
+export { getAllPosts, CreatePost, UpadetPost, DeletePost, LikePost, getPost };
