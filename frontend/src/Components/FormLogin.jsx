@@ -5,11 +5,13 @@ import InputDf from "./ui/InputDf";
 import InputFile from "./ui/InputFile";
 import TextareaDf from "./ui/TextareaDf";
 import Button from "./ui/Button";
-function FormLogin({ type, handelChange, handleSubmit, formData}) {
+import { GoogleLogin } from "@react-oauth/google";
+
+function FormLogin({ type,changerSign, handelChange, handleSubmit, formData,responseMessage,errorMessage}) {
   let formChamp = [];
 
   switch (type) {
-    case "signin":
+    case true:
       formChamp = [
         { label: "Email", name: "email", value: formData.email },
         
@@ -19,7 +21,7 @@ function FormLogin({ type, handelChange, handleSubmit, formData}) {
         { label: "Repeat Password", name: "repeatPass", value: formData.repeatPass },
       ];
       break;
-    case "login":
+    case false:
       formChamp = [
         { label: "Email", name: "email", value: formData.email },
         { label: "Password", name: "password", value: formData.password },
@@ -32,9 +34,9 @@ function FormLogin({ type, handelChange, handleSubmit, formData}) {
 
   return (
     <div className="bg-white w-full">
-      <div className="border-[1px] rounded-lg px-5 py-4 shadow-xl">
+      <div className="border-[1px] rounded-md px-5 py-4 shadow-xl">
         <h1 className="text-center text-base font-semibold">
-          {type === "sighin" ? "Sign Up" : "Sign In"}
+          {type? "SIGN UP" : "SIGN IN"}
         </h1>
         <div className="flex flex-col gap-4 justify-center py-2">
           {formChamp.map((field, index) => (
@@ -49,9 +51,15 @@ function FormLogin({ type, handelChange, handleSubmit, formData}) {
           ))}
 
           <Button
-            name={type === "sighin" ? "Sign Up" : "Sign In"}
+            name={type ? "SIGN UP" : "SIGN IN"}
             onSubmit={() => handleSubmit()}
-			style="bg-gradient-to-l from-blue-500 to-blue-600 w-full text-white rounded-md py-[4px] "
+			style="bg-gradient-to-l from-blue-800 to-blue-800 w-full text-white rounded-md py-[4px] "
+			/>
+			   <GoogleLogin onSuccess={responseMessage} onError={errorMessage} />
+			   <Button
+            name={type ?  "ALREADY HAVE AN ACCOUNT? SIGN IN":"D'ONT HAVE AN ACCOUNT? SIGN UP"}
+            onSubmit={changerSign}
+			style="w-full text-black rounded-md py-[4px] "
 			/>
         </div>
       </div>
@@ -60,10 +68,14 @@ function FormLogin({ type, handelChange, handleSubmit, formData}) {
 }
 
 FormLogin.propTypes = {
-  type: PropTypes.string.isRequired,
+  type: PropTypes.bool.isRequired,
   handelChange: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   formData: PropTypes.object,
+  ErrorMessage:PropTypes.func,
+  responseMessage:PropTypes.func,
+  changerSign:PropTypes.func.isRequired
+  
 };
 
 export default FormLogin;

@@ -4,7 +4,6 @@ import Header from "../Components/Header";
 import FormLogin from "../Components/FormLogin";
 import { useDispatch } from "react-redux";
 import { Connection, Inscription } from "../services/redux/actions/AuthActions";
-import { GoogleLogin } from "@react-oauth/google";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
 import {jwtDecode} from "jwt-decode"; 
@@ -49,7 +48,7 @@ function Auth() {
     repeatPass: "",
   });
 
-  const [type, setType] = useState("login");
+  const [type, setType] = useState(false);
 
   function handelChange(e) {
     const { name, value } = e.target;
@@ -59,9 +58,16 @@ function Auth() {
       [name]: value,
     }));
   }
-
+ function changerSign(){
+	setType(!type);
+ }
   function handleSignup() {
+	if (form.password !== form.repeatPass) {
+		alert("veiller écrire un mot de passe correcte.");
+		return;
+	  }
     const { repeatPass, ...newForm } = form;
+	
     dispatch(Inscription(newForm));
 
     setForm({
@@ -89,15 +95,17 @@ function Auth() {
   return (
     <div className="m-4">
       <Header type={type} />
-      <div className="w-full flex justify-center mt-2.5">
+      <div className="w-full flex justify-center mt-2.5 pt-6">
         <div className="w-2/5">
           <FormLogin
             type={type}
             formData={form}
             handelChange={handelChange}
             handleSubmit={type === "login" ? handleLogin : handleSignup}
+			onSuccess={responseMessage} onError={errorMessage}
+			changerSign={changerSign}
           />
-          <GoogleLogin onSuccess={responseMessage} onError={errorMessage} />
+       
         </div>
       </div>
     </div>

@@ -19,16 +19,15 @@ function Header() {
 
   return (
     <>
-      <div className="flex rounded-2xl bg-white border py-1 shadow-md">
+      <div className="flex justify-around  bg-white border py-1 shadow-md">
         <p className="text-4xl font-medium text-sky-500 text-center">
           SnapSync
         </p>
         <p>{user ? user.firstName + "  " + user.lastName : ""}</p>
         <Button
-          name={user ? "Logout" : "sgnin"}
-          bgColor="bg-gradient-to-l from-red-500 to-red-600"
+          name={user ? "LOGOUT" : "SIGN IN"}
           onSubmit={redirect}
-          style="bg-gradient-to-l from-red-500 to-red-600 text-white rounded-md py-[4px]"
+          style="bg-gradient-to-l from-blue-800 to-blue-800  px-5 pr-6 text-white rounded-md "
         />
       </div>
     </>
