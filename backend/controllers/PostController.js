@@ -26,6 +26,7 @@ const getAllPosts = asynchandler(async (req, res) => {
 const CreatePost = asynchandler(async (req, res) => {
     const body = req.body;
     validator(PostSchema, body);
+	
     const post = await create(body);
     res.status(201).json(post);
 });
@@ -39,7 +40,6 @@ const CreatePost = asynchandler(async (req, res) => {
  */
 const UpadetPost = asynchandler(async (req, res) => {
     validator(PostSchema, req.body);
-
     const { tags } = req.body;
     const tagsArray = tags.split(",");
 

@@ -14,8 +14,8 @@ const Connection=(User)=>{
 				  "email": User.email,
 				},
 				"token": User.token
-			  };
-			  
+		      };
+
 	
 			dispatch({ type: AuthTypes.CONNECTION, payload:data});
 			

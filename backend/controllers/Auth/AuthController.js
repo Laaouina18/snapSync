@@ -3,6 +3,8 @@ import { userShema, validator } from "../../validator/JoiSchemas.js";
 import { CheckRecord } from "../../services/helpers/helpers.js";
 import asynchandler from "express-async-handler";
 import jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";
+
 import { generateToken } from "../../utils/generateToken.js";
 /**
  * CREATE new post.
@@ -14,9 +16,17 @@ import { generateToken } from "../../utils/generateToken.js";
 const CreateUser = asynchandler(async (req, res) => {
     const body = req.body;
     validator(userShema, body);
-    const user = await User.create(body);
+    const existingUser = await User.findOne({ email: body.email });
+
+    if (existingUser) {
+        return res.status(400).json({ message: "Un compte avec cet email existe déjà" });
+    }
+    const hashedPassword = await bcrypt.hash(body.password, 10);
+    const user = await User.create({ ...body, password: hashedPassword });
+
     return res.status(201).json(user);
 });
+
 /**
  * CREATE new post.
  * @async
@@ -24,20 +34,30 @@ const CreateUser = asynchandler(async (req, res) => {
  * @access public
  * @returns {Promise<Document>}
  */
-const GetUser = asynchandler(async (req, res) => {
-    const { id } = req.params;
-    const user = await User.findById(id);
-    return res.status(200).json(user);
-});
-const Login = asynchandler(async (req, res) => {
-	const { email, password } = req.body;
-  
-	const user = await User.findOne({ email, password });
-  
-	if (!user) {
-	  return res.status(401).json({ message: "ce compte n'existe pas" });
-	}
-	const token = generateToken(user);
-	return res.status(200).json({ user, token });
-  });
-export { CreateUser, GetUser, Login };
+const Login = async (req, res) => {
+    const { email, password } = req.body;
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+        return res.status(401).json({ message: "Ce compte n'existe pas" });
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+
+    if (!isPasswordValid) {
+        return res.status(401).json({ message: "Mot de passe incorrect" });
+    }
+    const userEx = {
+        _id: user._id,
+        email: user.email,
+		firstName:user.firstName,
+		lastName:user.lastName
+    };
+
+    const token = generateToken(user);
+    return res.status(200).json({ user: userEx, token });
+};
+
+
+export { CreateUser, Login };
