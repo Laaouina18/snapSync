@@ -16,7 +16,6 @@ function Button({ name, onSubmit,style }) {
 
 Button.propTypes = {
     name: PropTypes.string.isRequired,
-    bgColor: PropTypes.string.isRequired,
     onSubmit: PropTypes.func.isRequired
 };
 

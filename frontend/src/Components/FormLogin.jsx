@@ -5,7 +5,6 @@ import InputDf from "./ui/InputDf";
 import InputFile from "./ui/InputFile";
 import TextareaDf from "./ui/TextareaDf";
 import Button from "./ui/Button";
-import GoogleAuthComponent from "./GoogleAuthComponent";
 function FormLogin({ type, handelChange, handleSubmit, formData}) {
   let formChamp = [];
 
@@ -13,9 +12,10 @@ function FormLogin({ type, handelChange, handleSubmit, formData}) {
     case "signin":
       formChamp = [
         { label: "Email", name: "email", value: formData.email },
-        { label: "Password", name: "password", value: formData.password },
+        
         { label: "First Name", name: "firstName", value: formData.firstName },
         { label: "Last Name", name: "lastName", value: formData.lastName },
+		{ label: "Password", name: "password", value: formData.password },
         { label: "Repeat Password", name: "repeatPass", value: formData.repeatPass },
       ];
       break;
@@ -53,8 +53,6 @@ function FormLogin({ type, handelChange, handleSubmit, formData}) {
             onSubmit={() => handleSubmit()}
 			style="bg-gradient-to-l from-blue-500 to-blue-600 w-full text-white rounded-md py-[4px] "
 			/>
-
-			<GoogleAuthComponent  />
         </div>
       </div>
     </div>

@@ -1,20 +1,29 @@
-import { LogError } from 'concurrently';
+
 import jwt from 'jsonwebtoken';
 
-const authMiddleware = (req, res, next) => {
+const clientId = process.env.CLIENT_ID;
+const clientSecret = process.env.CLIENT_SECRET;
+
+const authMiddleware = async (req, res, next) => {
     const BearerToken = req.headers.authorization;
+
     if (BearerToken) {
-    const token = BearerToken.split("Bearer ")[1];
-    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-			if (err) {
-				return res.status(401).json({ message: 'token invalide' });
-			}
-			req.user = decoded;
-			next();
-		});
-	} else {
-	    throw new Error("no token");
-	}
+        if (BearerToken.length > 500) {
+          next();
+        }else{
+
+
+        const token = BearerToken.split("Bearer ")[1];
+        jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+            if (err) {
+                return res.status(401).json({ message: 'Token invalide' });
+            }
+            req.user = decoded;
+            next();
+        });
+    } }else {
+        throw new Error("no token");
+    }
 };
 
 export { authMiddleware };

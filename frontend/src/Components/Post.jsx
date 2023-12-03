@@ -17,7 +17,8 @@ function Post({
     handleDelete
 
 }) {
-
+	const user=JSON.parse(localStorage.getItem('User'));
+	const isCreator = user && user.firstName === creator;
     return (
         <div className="rounded-lg border overflow-hidden shadow-xl">
             <div className=" h-40 border-b-[1px] mb-4 overflow-hidden relative ">
@@ -27,7 +28,7 @@ function Post({
                     <div className="flex justify-center">
                         <div className="flex justify-between items-center w-10/12 text-white">
                             <span className="text">title{creator}</span>
-                            <div
+							{isCreator && <div
                                 className=" cursor-pointer "
                                 onClick={() =>
                                     updatefunc({
@@ -41,7 +42,7 @@ function Post({
                                 }
                             >
                                 <HiOutlineDotsHorizontal />
-                            </div>
+                            </div>}
                         </div>
                     </div>
                     <span className="text-white text-xs pl-5 font-light">
@@ -66,6 +67,7 @@ function Post({
                                 LIKE {likeNumber}
                             </span>
                         </div>
+						{isCreator &&
                         <div
                             className="text-blue-700 text-xl flex items-center gap-1 cursor-pointer"
                             onClick={() => handleDelete(id)}
@@ -74,8 +76,8 @@ function Post({
                             <span className=" text-sm select-none ">
                                 DELETE
                             </span>
-                        </div>
-                    </div>
+                        </div>}
+                    </div> 
                 </div>
             </div>
         </div>
@@ -94,7 +96,6 @@ Post.propTypes = {
     updatefunc: PropTypes.func.isRequired,
     like: PropTypes.func.isRequired,
     handleDelete: PropTypes.func.isRequired
-
 };
 
 export default Post;

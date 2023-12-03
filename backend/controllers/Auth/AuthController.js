@@ -26,7 +26,6 @@ const CreateUser = asynchandler(async (req, res) => {
  */
 const GetUser = asynchandler(async (req, res) => {
     const { id } = req.params;
-// return res.status(200).json(id);
     const user = await User.findById(id);
     return res.status(200).json(user);
 });

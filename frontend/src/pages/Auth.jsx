@@ -1,14 +1,45 @@
-import React, { useState ,useEffect } from "react";
+
+import React, { useState } from "react";
 import Header from "../Components/Header";
 import FormLogin from "../Components/FormLogin";
-import { useDispatch ,useSelector} from "react-redux";
+import { useDispatch } from "react-redux";
 import { Connection, Inscription } from "../services/redux/actions/AuthActions";
-import { FcGoogle } from "react-icons/fc"; 
-
+import { GoogleLogin } from "@react-oauth/google";
+import { useHistory } from "react-router-dom";
+import axios from "axios";
+import {jwtDecode} from "jwt-decode"; 
 function Auth() {
-	const User = useSelector((state) => state.AuthReducer);
   const dispatch = useDispatch();
- 
+  const history= useHistory();
+  const [user, setUser] = useState({
+	_id:"",
+    firstName: "",
+    email: "",
+    Istrue: true,
+    token: "",
+  });
+
+  const responseMessage = (response) => {
+    const decodedToken = jwtDecode(response.credential);
+    console.log(response);
+
+    const updatedUser = {
+      _id: decodedToken.sub,
+      firstName: decodedToken.family_name,
+      lastName: decodedToken.given_name,
+      email: decodedToken.email,
+      Istrue: true,
+      token: response.credential,
+    };
+
+    setUser(updatedUser);
+    dispatch(Connection(updatedUser));
+    history.push('/');
+  };
+
+  const errorMessage = (error) => {
+    console.log(error);
+  };
 
   const [form, setForm] = useState({
     email: "",
@@ -28,6 +59,7 @@ function Auth() {
       [name]: value,
     }));
   }
+
   function handleSignup() {
     const { repeatPass, ...newForm } = form;
     dispatch(Inscription(newForm));
@@ -39,7 +71,6 @@ function Auth() {
       password: "",
       repeatPass: "",
     });
-	console.log(User);
   }
 
   function handleLogin() {
@@ -52,12 +83,12 @@ function Auth() {
       password: "",
       repeatPass: "",
     });
-
+    history.push('/');
   }
 
   return (
     <div className="m-4">
-      <Header />
+      <Header type={type} />
       <div className="w-full flex justify-center mt-2.5">
         <div className="w-2/5">
           <FormLogin
@@ -66,7 +97,7 @@ function Auth() {
             handelChange={handelChange}
             handleSubmit={type === "login" ? handleLogin : handleSignup}
           />
-     
+          <GoogleLogin onSuccess={responseMessage} onError={errorMessage} />
         </div>
       </div>
     </div>
