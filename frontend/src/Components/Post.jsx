@@ -27,7 +27,7 @@ function Post({
                 <div className="absolute left-0 top-3 w-full">
                     <div className="flex justify-center">
                         <div className="flex justify-between items-center w-10/12 text-white">
-                            <span className="text">title{creator}</span>
+                            <span className="text">{creator}</span>
 							{isCreator && <div
                                 className=" cursor-pointer "
                                 onClick={() =>

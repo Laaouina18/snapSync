@@ -22,10 +22,10 @@ function Posts() {
 	const token=localStorage.getItem('token');
 	const user=JSON.parse(localStorage.getItem('User'));
     const dispatch = useDispatch();
-
+	const [NumPage, setNumPage] = useState(1);
     useEffect(() => {
-        dispatch(fetchPosts());
-    }, [dispatch]);
+        dispatch(fetchPosts(NumPage));
+    }, [dispatch],[NumPage]);
     const [FormRecherche,setFormRecherche]=useState({
 		title:"",
 		tags:""
@@ -76,7 +76,7 @@ function Posts() {
             title: "",
             image: "",
             message: "",
-            tags: "" 
+            tags: ""
         });
 
         emptyFileInpute("imageInput");
@@ -121,7 +121,10 @@ setFormRecherche({
     function handleDelete(postId) {
         dispatch(DeletePost(postId,token));
     }
-
+	function handlePaginationChange(event, value) {
+        setNumPage(value);
+        dispatch(fetchPosts(value));
+    }
     return (
         <div className=" m-4">
             <Header />
@@ -155,7 +158,6 @@ setFormRecherche({
                         handelChange={handelChangeSearch}
                         handleSubmit={handleSubmitSearch }
                         formDataSearch={FormRecherche}
-						
                     />
 				
                     <Form
@@ -167,7 +169,7 @@ setFormRecherche({
                         ClearForm={ClearForm}
                     />
 					  <div className="bg-white w-10/12 flex justify-center p-2 ">
-					   <Pagination count={2} />
+					   <Pagination count={2}  page={NumPage} onChange={handlePaginationChange}/>
 					  </div>
 				
                 </div>

@@ -1,9 +1,9 @@
 import axios from "../../api/Axios";
 import { actionTypes } from "../types/action-Types";
 
-const fetchPosts = () => {
+const fetchPosts = (page) => {
     return async (dispatch) => {
-        const response = await axios.get("/post");
+        const response = await axios.get(`/post?page=${page}`);
         dispatch({ type: actionTypes.FETCH_POSTS, payload: response.data });
     };
 };
