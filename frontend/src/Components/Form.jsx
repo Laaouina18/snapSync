@@ -5,8 +5,10 @@ import Button from "./ui/Button";
 import PropTypes from "prop-types";
 
 function Form({ type, handelChange, handleSubmit, formData, ClearForm }) {
+	const user=localStorage.getItem('User');
     return (
         <div className="bg-white w-10/12 ">
+		{user  &&
             <div className="border-[1px] rounded-lg px-5 py-4 shadow-xl">
                 <h1 className="text-center  text-base font-semibold">
                     {type === "create" ? "Creating a Memory" : "update "}
@@ -48,6 +50,12 @@ function Form({ type, handelChange, handleSubmit, formData, ClearForm }) {
                     />
                 </div>
             </div>
+		}
+		{!user &&
+                <div className="border-[1px] rounded-lg px-5 py-4 shadow-xl">
+                    Please Signin in to create your Own posts and like other's posts
+                </div>
+            }
         </div>
     );
 }

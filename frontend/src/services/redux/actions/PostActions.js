@@ -7,6 +7,13 @@ const fetchPosts = () => {
         dispatch({ type: actionTypes.FETCH_POSTS, payload: response.data });
     };
 };
+const searchPost = (formSearch) => {
+    return async (dispatch) => {
+        const res = await axios.get(`/post/search?tags=${formSearch.tags}&title=${formSearch.title}`);
+		console.log(res);
+        dispatch({ type: 'SEARCH_POST', payload: res.data });
+    };
+};
 
 const CreatePost = (post,user,token) => {
 	console.log(token);
@@ -75,5 +82,5 @@ const DeletePost = (id, token) => {
 };
 
 
-export { fetchPosts, CreatePost, UpdatePost, LikePost, DeletePost };
+export { fetchPosts, CreatePost, UpdatePost, LikePost, DeletePost ,searchPost};
 

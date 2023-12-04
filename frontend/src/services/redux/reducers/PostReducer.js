@@ -7,7 +7,9 @@ const PostsReducer = (state = intialState, { type, payload }) => {
     switch (type) {
         case actionTypes.FETCH_POSTS:
             return { ...state, posts: payload };
-
+		case actionTypes.SEARCH_POST:
+			console.log("hi",payload);
+			return { ...state, posts: payload };
         case actionTypes.CREATE_POST:
             return { ...state, newPost: payload };
         case actionTypes.UPDATE_POST:
@@ -16,7 +18,6 @@ const PostsReducer = (state = intialState, { type, payload }) => {
             return { ...state, likePost: payload };
         case actionTypes.DELETE_POST:
             return { ...state, deletePost: payload };
-
         default:
             return state;
     }

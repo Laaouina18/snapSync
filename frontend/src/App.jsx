@@ -17,11 +17,9 @@ const App = () => {
 	<Route path="/auth" exact render={() => (
             userExists ? <Redirect to="/Posts" /> :<Auth/>
           )} />
-	<Route path="/Posts" exact render={() => (
-            userExists ? <Posts/> :<Auth/>
+	<Route path="/Posts" exact render={() => ( <Posts/> 
           )} />
-      <Route path="/" exact render={() => (
-            userExists ? <Posts/>:<Redirect to="/auth" /> 
+      <Route path="/" exact render={() => ( <Posts/> 
           )} />
     </Switch>
     </BrowserRouter>

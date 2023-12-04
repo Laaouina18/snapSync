@@ -28,6 +28,7 @@ const Inscription=(User)=>{
 	
 	return async (dispatch) => {
         const response = await axios.post("/auth/inscription",User);
+		console.log(response);
         dispatch({ type: AuthTypes.INSCRIPTION, payload: response.data });
     };
 }

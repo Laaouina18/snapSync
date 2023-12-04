@@ -19,8 +19,9 @@ function Auth() {
   });
 
   const responseMessage = (response) => {
+	console.log(response);
     const decodedToken = jwtDecode(response.credential);
-    console.log(response);
+    
 
     const updatedUser = {
       _id: decodedToken.sub,
@@ -66,7 +67,7 @@ function Auth() {
 		alert("veiller écrire un mot de passe correcte.");
 		return;
 	  }
-    const { repeatPass, ...newForm } = form;
+     const { repeatPass, ...newForm } = form;
 	
     dispatch(Inscription(newForm));
 

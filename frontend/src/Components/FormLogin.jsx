@@ -14,7 +14,6 @@ function FormLogin({ type,changerSign, handelChange, handleSubmit, formData,resp
     case true:
       formChamp = [
         { label: "Email", name: "email", value: formData.email },
-        
         { label: "First Name", name: "firstName", value: formData.firstName },
         { label: "Last Name", name: "lastName", value: formData.lastName },
 		{ label: "Password", name: "password", value: formData.password },
@@ -30,8 +29,6 @@ function FormLogin({ type,changerSign, handelChange, handleSubmit, formData,resp
     default:
 		 return null;
   }
-
-
   return (
     <div className="bg-white w-full">
       <div className="border-[1px] rounded-md px-5 py-4 shadow-xl">

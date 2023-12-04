@@ -3,13 +3,15 @@ import Post from "../Components/Post";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import Moment from 'moment';
-
+import FormSearch from "../Components/FormSearch";
+import Pagination from '@mui/material/Pagination';
 import {
     fetchPosts,
     CreatePost,
     UpdatePost,
     LikePost,
-    DeletePost
+    DeletePost,
+	searchPost
 } from "../services/redux/actions/PostActions";
 
 import Form from "../Components/Form";
@@ -24,7 +26,10 @@ function Posts() {
     useEffect(() => {
         dispatch(fetchPosts());
     }, [dispatch]);
-
+    const [FormRecherche,setFormRecherche]=useState({
+		title:"",
+		tags:""
+	})
     const [form, setForm] = useState({
         title: "",
         image: "",
@@ -44,7 +49,13 @@ function Posts() {
             [name]: inputeValue
         }));
     }
-
+ function handelChangeSearch(e){
+	const { name, value  } = e.target;
+	setFormRecherche((prev) => ({
+		...prev,
+		[name]: value
+	}));
+ }
     const [SelectedPostId, SetselectedPostId] = useState(null);
     const [FormType, SetFormType] = useState("create");
 
@@ -70,7 +81,13 @@ function Posts() {
 
         emptyFileInpute("imageInput");
     }
-
+function handleSubmitSearch(){
+dispatch(searchPost(FormRecherche));
+setFormRecherche({
+	title: "",
+	tags: "" 
+});
+}
     function Update() {
         dispatch(UpdatePost(form,user.firstName, SelectedPostId,token));
         setForm({
@@ -86,7 +103,6 @@ function Posts() {
 
     function ClearForm() {
         setForm({
-
             title: "",
             image: "",
             message: "",
@@ -134,17 +150,25 @@ function Posts() {
                     </div>
                 </div>
 
-                <div className=" w-full flex justify-center">
+                <div className=" w-full flex flex-col ml-2 ">
+				<FormSearch
+                        handelChange={handelChangeSearch}
+                        handleSubmit={handleSubmitSearch }
+                        formDataSearch={FormRecherche}
+						
+                    />
+				
                     <Form
                         type={FormType}
                         handelChange={handelChange}
                         handleSubmit={
-                            FormType === "create" ? handleSubmit : Update
-                        }
+                            FormType === "create" ? handleSubmit : Update}
                         formData={form}
                         ClearForm={ClearForm}
-						
                     />
+					  <div className="bg-white w-10/12 flex justify-center p-2 ">
+					   <Pagination count={2} />
+					  </div>
 				
                 </div>
             
