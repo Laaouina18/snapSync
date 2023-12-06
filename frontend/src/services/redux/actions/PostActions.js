@@ -15,16 +15,27 @@ const searchPost = (formSearch) => {
     };
 };
 
-const CreatePost = (post,user,token) => {
+const getPost=(id,tags)=>{
+ return async (dispatch)=>{
+	const res= await axios.get(`/post/postdetail/${id}?tags=${tags}`);
+	console.log(res.data);
+	dispatch({type:'GET_POST',payload:res.data});
+ }
+}
+
+const CreatePost = (post,userId,userName,token) => {
 	console.log(token);
     return async (dispatch) => {
 		const { title, image, date, message, tags } = post;
-		const creator=user;
+		const creator=userId;
+		const name=userName;
+
         const response = await axios.post("/post/", {
             title,
             image,
             date,
             creator,
+			name,
             message,
             tags
         },{
@@ -82,5 +93,5 @@ const DeletePost = (id, token) => {
 };
 
 
-export { fetchPosts, CreatePost, UpdatePost, LikePost, DeletePost ,searchPost};
+export { fetchPosts, CreatePost, UpdatePost, LikePost, DeletePost ,searchPost, getPost};
 

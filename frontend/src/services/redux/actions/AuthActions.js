@@ -8,10 +8,10 @@ const Connection=(User)=>{
 		if(User.Istrue){
 			const data = {
 				"user": {
-					"_id":User._id,
-				  "firstName": User.firstName,
+			"_id":User._id,
+	        "firstName": User.firstName,
 				  "lastName": User.lastName,
-				  "email": User.email,
+				 "email": User.email,
 				},
 				"token": User.token
 		      };

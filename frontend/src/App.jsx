@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import store from './services/redux/store';
 import Auth from './pages/Auth';
 import Posts from './pages/Posts';
+import PostDetail from "./pages/PostDetail";
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 
 const App = () => {
@@ -20,6 +21,8 @@ const App = () => {
 	<Route path="/Posts" exact render={() => ( <Posts/> 
           )} />
       <Route path="/" exact render={() => ( <Posts/> 
+          )} />
+	  <Route path="/PostDetail" exact render={() => ( <PostDetail/> 
           )} />
     </Switch>
     </BrowserRouter>

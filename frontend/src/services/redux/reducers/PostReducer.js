@@ -10,6 +10,8 @@ const PostsReducer = (state = intialState, { type, payload }) => {
 		case actionTypes.SEARCH_POST:
 			console.log("hi",payload);
 			return { ...state, posts: payload };
+		case actionTypes.GET_POST:
+			return {...state,post:payload}
         case actionTypes.CREATE_POST:
             return { ...state, newPost: payload };
         case actionTypes.UPDATE_POST:

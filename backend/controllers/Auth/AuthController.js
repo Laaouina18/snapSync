@@ -17,7 +17,6 @@ const CreateUser = asynchandler(async (req, res) => {
     const body = req.body;
     validator(userShema, body);
     const existingUser = await User.findOne({ email: body.email });
-
     if (existingUser) {
         return res.status(400).json({ message: "Un compte avec cet email existe déjà" });
     }

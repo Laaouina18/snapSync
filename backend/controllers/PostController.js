@@ -12,7 +12,7 @@ import Post from "../models/PostModel.js";
  */
 const getAllPosts = async (req, res) => {
 	const page = parseInt(req.query.page) || 1;
-	const pageSize = 10; 
+	const pageSize = 4;
 	const skip = (page - 1) * pageSize;
   
 	try {
@@ -34,8 +34,27 @@ const getAllPosts = async (req, res) => {
  * @returns {Promise<Array<Document>>} 
  */
 const getPost= async (req, res) => {
-	const { tags, title } = req.query;
+	const { tags} = req.query;
+	const query = {};
   
+	if (tags) {
+	  query.tags = { $in: tags.split(',') };
+	}
+	const {id}=req.params;
+	try {
+	  const post = await Post.findById(id);
+	  const recomanded = await Post.find(query);
+	  const posts={
+		post,
+		recomanded
+	  }
+	  return res.json(posts);
+	} catch (error) {
+	  return res.status(500).json({ message: error.message });
+	}
+  };
+  const Search= async (req, res) => {
+	const { tags, title } = req.query;
 	const query = {};
   
 	if (tags) {
@@ -120,5 +139,4 @@ const LikePost = async (req, res) => {
 
     res.status(200).json(postup);
 };
-
-export { getAllPosts, CreatePost, UpadetPost, DeletePost, LikePost, getPost };
+export { getAllPosts, CreatePost, UpadetPost, DeletePost, LikePost, getPost, Search };

@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import Moment from 'moment';
 import FormSearch from "../Components/FormSearch";
 import Pagination from '@mui/material/Pagination';
+import { useHistory } from "react-router-dom";
 import {
     fetchPosts,
     CreatePost,
@@ -18,14 +19,17 @@ import Form from "../Components/Form";
 import { convertImageToBase64, emptyFileInpute } from "../utils/HelpesFunc";
 
 function Posts() {
+	const history= useHistory();
     const posts = useSelector((state) => state.PostsReducer.posts);
 	const token=localStorage.getItem('token');
 	const user=JSON.parse(localStorage.getItem('User'));
     const dispatch = useDispatch();
 	const [NumPage, setNumPage] = useState(1);
+	console.log(posts);
+	const Num=2;
     useEffect(() => {
         dispatch(fetchPosts(NumPage));
-    }, [dispatch],[NumPage]);
+    }, [dispatch], [NumPage]);
     const [FormRecherche,setFormRecherche]=useState({
 		title:"",
 		tags:""
@@ -71,7 +75,7 @@ function Posts() {
     }
 
     function handleSubmit() {
-        dispatch(CreatePost(form,user.firstName,token));
+        dispatch(CreatePost(form,user._id,user.firstName,token));
         setForm({
             title: "",
             image: "",
@@ -89,7 +93,7 @@ setFormRecherche({
 });
 }
     function Update() {
-        dispatch(UpdatePost(form,user.firstName, SelectedPostId,token));
+        dispatch(UpdatePost(form,user, SelectedPostId,token));
         setForm({
 
             title: "",
@@ -125,6 +129,16 @@ setFormRecherche({
         setNumPage(value);
         dispatch(fetchPosts(value));
     }
+	function postdetail(id,tags){
+		// console.log("hi");
+		// console.log(tags[0]);
+		history.push("/PostDetail",{
+			id:id,
+			tags:tags
+		})
+
+
+	}
     return (
         <div className=" m-4">
             <Header />
@@ -140,6 +154,8 @@ setFormRecherche({
                                     image={post.image}
 									date={Moment(post.createdAt).fromNow()} 
                                     creator={post.creator}
+									name={post.name}
+									post={postdetail}
                                     message={post.message}
                                     likeNumber={post.like.length}
                                     tags={post.tags}
@@ -153,7 +169,7 @@ setFormRecherche({
                     </div>
                 </div>
 
-                <div className=" w-full flex flex-col ml-2 ">
+                <div className=" w-full flex flex-col justify-center ml-2 ">
 				<FormSearch
                         handelChange={handelChangeSearch}
                         handleSubmit={handleSubmitSearch }
@@ -169,7 +185,7 @@ setFormRecherche({
                         ClearForm={ClearForm}
                     />
 					  <div className="bg-white w-10/12 flex justify-center p-2 ">
-					   <Pagination count={2}  page={NumPage} onChange={handlePaginationChange}/>
+					   <Pagination count={Num}  page={NumPage} onChange={handlePaginationChange}/>
 					  </div>
 				
                 </div>

@@ -11,7 +11,11 @@ const PostSchema = mongoose.Schema({
     },
     creator: {
         type: String,
-        required: [true, "please fill the creator"]
+        required: [true]
+    },
+	name: {
+        type: String,
+        required: [true ,"please name"]
     },
     image: {
         type: String,

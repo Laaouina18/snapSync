@@ -6,7 +6,8 @@ import {
     UpadetPost,
     DeletePost,
     LikePost,
-	getPost
+	getPost,
+	Search
 } from "../controllers/PostController.js";
 
 const router = Router();
@@ -22,7 +23,13 @@ router.get("/", getAllPosts);
  * @desc // get  Post
  * @access public
  */
-router.get("/search",getPost );
+router.get("/search", Search);
+/**
+ * @GET
+ * @desc // get  Post
+ * @access public
+ */
+router.get("/postdetail/:id", getPost);
 
 /**
  * @POST

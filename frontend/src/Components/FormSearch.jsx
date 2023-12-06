@@ -3,7 +3,7 @@ import Button from "./ui/Button";
 import PropTypes from "prop-types";
 function FormSearch({  handelChange, handleSubmit, formDataSearch }) {
     return (
-        <div className="bg-white w-10/12 mb-2">
+        <div className="bg-white w-10/12 mb-2  ">
             <div className="border-[1px] rounded-lg px-5 py-4 shadow-xl">
                 <div className="flex flex-col gap-4 justify-center py-2">
                     <InputDf

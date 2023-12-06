@@ -1,8 +1,4 @@
-
 import jwt from 'jsonwebtoken';
-
-const clientId = process.env.CLIENT_ID;
-const clientSecret = process.env.CLIENT_SECRET;
 
 const authMiddleware = async (req, res, next) => {
     const BearerToken = req.headers.authorization;

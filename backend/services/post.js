@@ -18,12 +18,13 @@ import asynchandler from "express-async-handler";
  * @returns {Promise<Document>} A Promise that resolves to the document representing the new post record.
  */
 const create = asynchandler(async (data) => {
-    const { title, message, creator, image, tags } = data;
+    const { title, message, name,creator, image, tags } = data;
     const tagsArray = tags.split(",");
     const post = await Post.create({
         title,
         message,
         creator,
+		name,
         image,
         tags: tagsArray
     });

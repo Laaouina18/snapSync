@@ -9,25 +9,27 @@ function Post({
     image,
     date,
     creator,
+	name,
     message,
     likeNumber,
     tags,
     updatefunc,
     like,
-    handleDelete
+    handleDelete,
+	post
 
 }) {
 	const user=JSON.parse(localStorage.getItem('User'));
-	const isCreator = user && user.firstName === creator;
+	const isCreator = user && user._id === creator;
     return (
-        <div className="rounded-lg border overflow-hidden shadow-xl">
+        <div className="rounded-lg border overflow-hidden shadow-xl"onClick={()=>post(id,tags[0])} >
             <div className=" h-40 border-b-[1px] mb-4 overflow-hidden relative ">
                 <img className=" h-full w-full " src={image} alt="test" />
                 <div className="absolute left-0 top-0 bg-black  w-full h-full bg-opacity-50 "></div>
                 <div className="absolute left-0 top-3 w-full">
                     <div className="flex justify-center">
                         <div className="flex justify-between items-center w-10/12 text-white">
-                            <span className="text">{creator}</span>
+                            <span className="text">{name}</span>
 							{isCreator && <div
                                 className=" cursor-pointer "
                                 onClick={() =>
@@ -95,7 +97,8 @@ Post.propTypes = {
     id: PropTypes.string.isRequired,
     updatefunc: PropTypes.func.isRequired,
     like: PropTypes.func.isRequired,
-    handleDelete: PropTypes.func.isRequired
+    handleDelete: PropTypes.func.isRequired,
+	post:PropTypes.func
 };
 
 export default Post;

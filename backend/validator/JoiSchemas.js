@@ -32,8 +32,10 @@ const PostSchema = Joi.object({
     title: Joi.string().required().messages(customErrorMessages),
     message: Joi.string().required().messages(customErrorMessages),
     creator: Joi.string().required().messages(customErrorMessages),
+	name: Joi.string().messages(customErrorMessages),
     image: Joi.string().required().messages(customErrorMessages),
-    tags: Joi.string().required().messages(customErrorMessages)
+	tags:Joi.string().required().messages(customErrorMessages)
+
 });
 
 /**
@@ -46,6 +48,7 @@ const userShema=Joi.object(
 		lastName:Joi.string().required().messages(customErrorMessages),
 		email:Joi.string().required().messages(customErrorMessages),
 		password:Joi.string().required().messages(customErrorMessages)
+	
 	}
 )
 /**
